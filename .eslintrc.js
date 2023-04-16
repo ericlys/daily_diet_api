@@ -11,6 +11,8 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'prettier'],
   rules: {
+    camelcase: 'off',
+    'no-useless-constructor': 'off',
     'prettier/prettier': [
       'error',
       {
