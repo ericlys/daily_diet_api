@@ -1,9 +1,9 @@
 import { Prisma, Meal } from '@prisma/client'
-import { MealsRepository } from '../meals-repository'
+import { MealsRepository, UpdateMealParams } from '../meals-repository'
 import { randomUUID } from 'crypto'
 
 export class InMemoryMealsRepository implements MealsRepository {
-  private item: Meal[] = []
+  private items: Meal[] = []
 
   async create(data: Prisma.MealUncheckedCreateInput): Promise<Meal> {
     const meal = {
@@ -16,8 +16,20 @@ export class InMemoryMealsRepository implements MealsRepository {
       created_at: new Date(),
     }
 
-    this.item.push(meal)
+    this.items.push(meal)
 
     return meal
+  }
+
+  async findById(id: string): Promise<Meal | null> {
+    const meal = this.items.find((item) => item.id === id)
+    return meal ?? null
+  }
+
+  async update(params: UpdateMealParams): Promise<Meal> {
+    const mealIndex = this.items.findIndex((item) => item.id === params.id)
+    Object.assign(this.items[mealIndex], params)
+
+    return this.items[mealIndex]
   }
 }
