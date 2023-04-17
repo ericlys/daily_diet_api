@@ -5,7 +5,7 @@ import { randomUUID } from 'crypto'
 export class InMemoryMealsRepository implements MealsRepository {
   private items: Meal[] = []
 
-  async create(data: Prisma.MealUncheckedCreateInput): Promise<Meal> {
+  async create(data: Prisma.MealUncheckedCreateInput) {
     const meal = {
       id: randomUUID(),
       name: data.name,
@@ -21,19 +21,25 @@ export class InMemoryMealsRepository implements MealsRepository {
     return meal
   }
 
-  async findById(id: string): Promise<Meal | null> {
+  async findById(id: string) {
     const meal = this.items.find((item) => item.id === id)
     return meal ?? null
   }
 
-  async update(params: UpdateMealParams): Promise<Meal> {
+  async findManyByUserId(userId: string, page: number) {
+    return this.items
+      .filter((item) => item.user_id === userId)
+      .slice((page - 1) * 20, page * 20)
+  }
+
+  async update(params: UpdateMealParams) {
     const mealIndex = this.items.findIndex((item) => item.id === params.id)
     Object.assign(this.items[mealIndex], params)
 
     return this.items[mealIndex]
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string) {
     const mealIndex = this.items.findIndex((item) => item.id === id)
     this.items.splice(mealIndex, 1)
   }
