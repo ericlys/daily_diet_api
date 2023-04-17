@@ -17,7 +17,7 @@ CREATE TABLE "meals" (
     "date_time" TIMESTAMP(3),
     "on_diet" BOOLEAN NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "userId" TEXT,
+    "user_id" TEXT NOT NULL,
 
     CONSTRAINT "meals_pkey" PRIMARY KEY ("id")
 );
@@ -26,4 +26,4 @@ CREATE TABLE "meals" (
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- AddForeignKey
-ALTER TABLE "meals" ADD CONSTRAINT "meals_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "meals" ADD CONSTRAINT "meals_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
