@@ -5,6 +5,7 @@ interface CreateMealUseCaseRequest {
   name: string
   description: string
   on_diet: boolean
+  date_time?: Date
   user_id: string
 }
 

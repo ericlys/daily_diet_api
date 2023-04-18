@@ -7,18 +7,15 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     name: z.string(),
     description: z.string(),
     on_diet: z.boolean(),
+    date_time: z.coerce.date().optional(),
   })
 
-  const { name, description, on_diet } = createMealBodySchema.parse(
-    request.body,
-  )
+  const params = createMealBodySchema.parse(request.body)
 
   const mealUseCase = makeCreateMealUseCase()
 
   await mealUseCase.execute({
-    name,
-    description,
-    on_diet,
+    ...params,
     user_id: request.user.sub,
   })
 

@@ -9,7 +9,7 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
   })
 
   const updateMealBodySchema = z.object({
-    date_time: z.date().optional(),
+    date_time: z.coerce.date().optional(),
     description: z.string().optional(),
     name: z.string().optional(),
     on_diet: z.boolean().optional(),
