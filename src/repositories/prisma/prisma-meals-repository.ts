@@ -53,6 +53,7 @@ export class PrismaMealsRepository implements MealsRepository {
   async getMetricsByUserId(userId: string) {
     const result = await prisma.$queryRaw<MealMetrics[]>`
       SELECT
+        COUNT(*) AS total,
         SUM(on_diet::integer) AS on_diet,
         COUNT(*) - SUM(on_diet::integer) AS out_of_diet,
         MAX(diet_sequence) AS best_sequence
@@ -66,6 +67,7 @@ export class PrismaMealsRepository implements MealsRepository {
     `
 
     return {
+      total: Number(result[0].total),
       on_diet: Number(result[0].on_diet),
       out_of_diet: Number(result[0].out_of_diet),
       best_sequence: Number(result[0].best_sequence),

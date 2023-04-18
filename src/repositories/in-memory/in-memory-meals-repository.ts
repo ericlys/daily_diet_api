@@ -52,12 +52,14 @@ export class InMemoryMealsRepository implements MealsRepository {
     let max = 0
     const metrics = userMeals.reduce(
       (acc, item) => {
+        acc.total++
         acc[item.on_diet ? 'on_diet' : 'out_of_diet']++
         max = item.on_diet ? max + 1 : 0
         acc.best_sequence = Math.max(acc.best_sequence, max)
         return acc
       },
       {
+        total: 0,
         on_diet: 0,
         out_of_diet: 0,
         best_sequence: 0,

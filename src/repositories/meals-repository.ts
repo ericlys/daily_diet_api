@@ -9,6 +9,7 @@ export interface UpdateMealParams {
 }
 
 export interface MealMetrics {
+  total: number
   on_diet: number
   out_of_diet: number
   best_sequence: number
