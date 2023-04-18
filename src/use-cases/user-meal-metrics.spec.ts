@@ -1,9 +1,9 @@
 import { UserMealMetricsUseCase } from './user-meal-metrics'
 import { InMemoryMealsRepository } from '@/repositories/in-memory/in-memory-meals-repository'
-import { MetricsRepository } from '@/repositories/metrics-repository'
+import { MealsRepository } from '@/repositories/meals-repository'
 import { randomUUID } from 'crypto'
 
-let metricsRepository: MetricsRepository
+let metricsRepository: MealsRepository
 let sut: UserMealMetricsUseCase
 
 describe('User Meal Metrics Use Case', () => {
@@ -19,7 +19,7 @@ describe('User Meal Metrics Use Case', () => {
       name: 'Meal 1',
       description: 'Description meal 1',
       on_diet: true,
-      date_time: new Date('2023-04-16T03:24:00'),
+      date_time: new Date('2024-12-17T03:24:00'),
       user_id,
     })
 
@@ -27,7 +27,7 @@ describe('User Meal Metrics Use Case', () => {
       name: 'Meal 2',
       description: 'Description meal 2',
       on_diet: false,
-      date_time: new Date('2023-04-16T04:24:00'),
+      date_time: new Date('2024-12-17T03:24:00'),
       user_id,
     })
 
@@ -35,15 +35,7 @@ describe('User Meal Metrics Use Case', () => {
       name: 'Meal 3',
       description: 'Description meal 3',
       on_diet: true,
-      date_time: new Date('2023-04-16T05:24:00'),
-      user_id,
-    })
-
-    await metricsRepository.create({
-      name: 'Meal 5',
-      description: 'Description meal 4',
-      on_diet: false,
-      date_time: new Date('2023-04-16T07:24:00'),
+      date_time: new Date('2024-12-17T03:24:00'),
       user_id,
     })
 
@@ -51,7 +43,15 @@ describe('User Meal Metrics Use Case', () => {
       name: 'Meal 4',
       description: 'Description meal 4',
       on_diet: true,
-      date_time: new Date('2023-04-16T06:24:00'),
+      date_time: new Date('2024-12-17T03:24:00'),
+      user_id,
+    })
+
+    await metricsRepository.create({
+      name: 'Meal 4',
+      description: 'Description meal 4',
+      on_diet: false,
+      date_time: new Date('2024-12-17T03:24:00'),
       user_id,
     })
 

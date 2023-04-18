@@ -1,4 +1,4 @@
-import { MetricsRepository } from '@/repositories/metrics-repository'
+import { MealsRepository } from '@/repositories/meals-repository'
 
 interface UserMealMetricsUseCaseResponse {
   on_diet: number
@@ -7,11 +7,11 @@ interface UserMealMetricsUseCaseResponse {
 }
 
 export class UserMealMetricsUseCase {
-  constructor(private metricsRepository: MetricsRepository) {}
+  constructor(private mealRepository: MealsRepository) {}
 
   async execute(userId: string): Promise<UserMealMetricsUseCaseResponse> {
     const { on_diet, out_of_diet, best_sequence } =
-      await this.metricsRepository.getMetricsByUserId(userId)
+      await this.mealRepository.getMetricsByUserId(userId)
 
     return { on_diet, out_of_diet, best_sequence }
   }

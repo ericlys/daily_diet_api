@@ -1,11 +1,8 @@
 import { Prisma, Meal } from '@prisma/client'
 import { MealsRepository, UpdateMealParams } from '../meals-repository'
 import { randomUUID } from 'crypto'
-import { MetricsRepository } from '../metrics-repository'
 
-export class InMemoryMealsRepository
-  implements MealsRepository, MetricsRepository
-{
+export class InMemoryMealsRepository implements MealsRepository {
   private items: Meal[] = []
 
   async create(data: Prisma.MealUncheckedCreateInput) {
