@@ -4,6 +4,7 @@ import { create } from './create'
 import { destroy } from './destroy'
 import { store } from './store'
 import { show } from './show'
+import { update } from './update'
 
 export async function mealsRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJWT)
@@ -12,4 +13,5 @@ export async function mealsRoutes(app: FastifyInstance) {
   app.delete('/meals/:id', destroy)
   app.get('/meals', store)
   app.get('/meals/:id', show)
+  app.put('/meals/:id', update)
 }
