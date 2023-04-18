@@ -51,24 +51,24 @@ export class PrismaMealsRepository implements MealsRepository {
   }
 
   async getMetricsByUserId(userId: string) {
-    const metrics = await prisma.$queryRaw<MealMetrics>`
-      SELECT COUNT(*) AS total_meals,
-            SUM(on_diet) AS on_diet,
-            SUM(1 - on_diet) AS out_of_diet,
-            MAX(subseq) AS best_sequence
+    const result = await prisma.$queryRaw<MealMetrics[]>`
+      SELECT
+        SUM(on_diet::integer) AS on_diet,
+        COUNT(*) - SUM(on_diet::integer) AS out_of_diet,
+        MAX(diet_sequence) AS best_sequence
       FROM (
-          SELECT m.*, 
-            (SELECT COUNT(*) 
-            FROM meal 
-            WHERE user_id = m.user_id 
-            AND on_diet = 1 
-            AND date(timestamp) = date(m.timestamp) 
-            AND timestamp <= m.timestamp) AS subseq
-          FROM meal m
-          WHERE m.user_id = ${userId}
-      ) t
+        SELECT
+          *,
+          ROW_NUMBER() OVER (ORDER BY date_time) - ROW_NUMBER() OVER (PARTITION BY on_diet::integer ORDER BY date_time) AS diet_sequence
+        FROM meals
+        WHERE user_id = ${userId}
+      ) AS meal_sequence
     `
 
-    return metrics
+    return {
+      on_diet: Number(result[0].on_diet),
+      out_of_diet: Number(result[0].out_of_diet),
+      best_sequence: Number(result[0].best_sequence),
+    }
   }
 }
