@@ -20,12 +20,12 @@ model User {
 }
 
 model Meal {
-  id          String    @id @default(uuid())
+  id          String   @id @default(uuid())
   name        String
   description String
-  date_time   DateTime?
+  date_time   DateTime @default(now())
   on_diet     Boolean
-  created_at  DateTime  @default(now())
+  created_at  DateTime @default(now())
 
   user    User   @relation(fields: [user_id], references: [id])
   user_id String

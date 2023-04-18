@@ -1,8 +1,11 @@
 import { Prisma, Meal } from '@prisma/client'
 import { MealsRepository, UpdateMealParams } from '../meals-repository'
 import { randomUUID } from 'crypto'
+import { MetricsRepository } from '../metrics-repository'
 
-export class InMemoryMealsRepository implements MealsRepository {
+export class InMemoryMealsRepository
+  implements MealsRepository, MetricsRepository
+{
   private items: Meal[] = []
 
   async create(data: Prisma.MealUncheckedCreateInput) {
@@ -42,5 +45,28 @@ export class InMemoryMealsRepository implements MealsRepository {
   async delete(id: string) {
     const mealIndex = this.items.findIndex((item) => item.id === id)
     this.items.splice(mealIndex, 1)
+  }
+
+  async getMetricsByUserId(userId: string) {
+    const userMeals = this.items
+      .filter((item) => item.user_id === userId)
+      .sort((a, b) => a.date_time.getTime() - b.date_time.getTime())
+
+    let max = 0
+    const metrics = userMeals.reduce(
+      (acc, item) => {
+        acc[item.on_diet ? 'on_diet' : 'out_of_diet']++
+        max = item.on_diet ? max + 1 : 0
+        acc.best_sequence = Math.max(acc.best_sequence, max)
+        return acc
+      },
+      {
+        on_diet: 0,
+        out_of_diet: 0,
+        best_sequence: 0,
+      },
+    )
+
+    return metrics
   }
 }
