@@ -1,11 +1,13 @@
 import { verifyJWT } from '@/http/middlewares/verify-jwt'
 import { FastifyInstance } from 'fastify'
 import { create } from './create'
-import { remove } from './remove'
+import { destroy } from './destroy'
+import { store } from './store'
 
 export async function mealsRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJWT)
 
   app.post('/meals', create)
-  app.delete('/meals/:id', remove)
+  app.delete('/meals/:id', destroy)
+  app.get('/meals', store)
 }

@@ -3,7 +3,7 @@ import { makeDeleteMealUseCase } from '@/use-cases/factories/make-delete-meal-us
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-export async function remove(request: FastifyRequest, reply: FastifyReply) {
+export async function destroy(request: FastifyRequest, reply: FastifyReply) {
   const deleteMealBodyParams = z.object({
     id: z.string().uuid(),
   })
