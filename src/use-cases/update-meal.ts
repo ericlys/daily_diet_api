@@ -3,6 +3,7 @@ import { ResourceNotFoundError } from './erros/resource-not-found-error'
 import { Meal } from '@prisma/client'
 
 interface UpdateMealUseCaseRequest {
+  user_id: string
   id: string
   name?: string
   description?: string
@@ -20,7 +21,10 @@ export class UpdateMealUseCase {
   async execute(
     params: UpdateMealUseCaseRequest,
   ): Promise<UpdateMealUseCaseResponse> {
-    const mealExists = await this.mealsRepository.findById(params.id)
+    const mealExists = await this.mealsRepository.findByUserIdAndId(
+      params.user_id,
+      params.id,
+    )
 
     if (!mealExists) {
       throw new ResourceNotFoundError()

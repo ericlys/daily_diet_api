@@ -14,15 +14,17 @@ describe('Get Meal Use Case', () => {
   })
 
   it('should be able to fetch a meal data', async () => {
+    const user_id = randomUUID()
+
     const { id } = await mealsRepository.create({
       name: 'Meal test',
       description: 'Meal test description',
       on_diet: true,
       date_time: new Date(),
-      user_id: randomUUID(),
+      user_id,
     })
 
-    const { meal } = await sup.execute(id)
+    const { meal } = await sup.execute(user_id, id)
 
     expect(meal).toEqual(
       expect.objectContaining({
@@ -35,8 +37,8 @@ describe('Get Meal Use Case', () => {
   })
 
   it('should throw an error if the meal data does not exists', async () => {
-    await expect(() => sup.execute('fake-id')).rejects.toBeInstanceOf(
-      ResourceNotFoundError,
-    )
+    await expect(() =>
+      sup.execute('fake-user-id', 'fake-id'),
+    ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })

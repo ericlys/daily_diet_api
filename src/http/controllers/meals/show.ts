@@ -13,7 +13,7 @@ export async function show(request: FastifyRequest, reply: FastifyReply) {
   const mealUseCase = makeGetMealUseCase()
 
   try {
-    const { meal } = await mealUseCase.execute(id)
+    const { meal } = await mealUseCase.execute(request.user.sub, id)
 
     return reply.status(200).send({ meal })
   } catch (err) {

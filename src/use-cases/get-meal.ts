@@ -9,8 +9,8 @@ interface GetMealUseCaseResponse {
 export class GetMealUseCase {
   constructor(private mealsRepository: MealsRepository) {}
 
-  async execute(id: string): Promise<GetMealUseCaseResponse> {
-    const meal = await this.mealsRepository.findById(id)
+  async execute(user_id: string, id: string): Promise<GetMealUseCaseResponse> {
+    const meal = await this.mealsRepository.findByUserIdAndId(user_id, id)
 
     if (!meal) {
       throw new ResourceNotFoundError()

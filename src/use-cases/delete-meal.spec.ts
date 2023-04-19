@@ -13,23 +13,25 @@ describe('Delete Meal Use Case', () => {
   })
 
   it('should be able delete a meal', async () => {
+    const user_id = 'test-user-id'
+
     const { id } = await mealsRepository.create({
       name: 'Meal Test',
       description: 'Meal description',
       on_diet: true,
-      user_id: 'fake_user_id',
+      user_id,
     })
 
-    await sub.execute({ id })
+    await sub.execute({ user_id, id })
 
-    const mealExists = await mealsRepository.findById(id)
+    const mealExists = await mealsRepository.findByUserIdAndId(user_id, id)
 
     expect(mealExists).toBeNull()
   })
 
   it('should throw an error if the meal does not exists', async () => {
-    await expect(sub.execute({ id: 'fake-id' })).rejects.toBeInstanceOf(
-      ResourceNotFoundError,
-    )
+    await expect(
+      sub.execute({ user_id: 'fake-user-id', id: 'fake-id' }),
+    ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })

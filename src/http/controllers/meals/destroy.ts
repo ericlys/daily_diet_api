@@ -14,6 +14,7 @@ export async function destroy(request: FastifyRequest, reply: FastifyReply) {
 
   try {
     await mealUseCase.execute({
+      user_id: request.user.sub,
       id,
     })
   } catch (err) {
