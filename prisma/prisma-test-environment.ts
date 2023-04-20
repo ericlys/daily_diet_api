@@ -22,8 +22,8 @@ export default class PrismaTestEnvironment extends NodeEnvironment {
   private schema: string
   private prisma: PrismaClient
 
-  constructor(config: JestEnvironmentConfig) {
-    super(config, {} as EnvironmentContext)
+  constructor(config: JestEnvironmentConfig, context: EnvironmentContext) {
+    super(config, context)
     this.schema = randomUUID()
     this.prisma = new PrismaClient()
   }
@@ -31,6 +31,7 @@ export default class PrismaTestEnvironment extends NodeEnvironment {
   async setup() {
     const databaseUrl = generateDatabaseUrl(this.schema)
     process.env.DATABASE_URL = databaseUrl
+    this.global.process.env.DATABASE_URL = databaseUrl
     execSync('npx prisma migrate deploy')
     return super.setup()
   }
