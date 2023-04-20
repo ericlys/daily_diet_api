@@ -9,6 +9,7 @@
     "test": "jest --passWithNoTests",
     "test:e2e": "jest --config jest-e2e.config.ts --passWithNoTests",
     "test:watch": "jest --watch",
+    "test:e2e:watch": "jest --config jest-e2e.config.ts --watch --passWithNoTests",
     "test:coverage": "jest --coverage"
   },
   "keywords": [],
