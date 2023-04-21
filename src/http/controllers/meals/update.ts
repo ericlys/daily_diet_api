@@ -23,6 +23,7 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
   try {
     await mealUseCase.execute({
       id,
+      user_id: request.user.sub,
       ...data,
     })
 
